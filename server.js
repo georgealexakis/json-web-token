@@ -62,6 +62,8 @@ app.get('/api/users', (_req, res) => {
     res.type('json');
     res.send(getUsers());
 });
-app.listen(4000, () => {
-    console.log('JWT API Server listening on port 4000');
+// Set port, listen for requests
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`JWT API Server is running on port ${PORT}`);
 });
