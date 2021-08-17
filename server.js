@@ -33,7 +33,7 @@ function getUsers() {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(expressJwt({ secret: 'soup-app-secret', algorithms: ['HS256'] }).unless({ path: ['/api/auth'] }));
+app.use(expressJwt({ secret: 'jwt-app-secret', algorithms: ['HS256'] }).unless({ path: ['/api/auth'] }));
 app.use((err, _req, res, _next) => {
     if (err.name === 'UnauthorizedError') {
         res.status(401).send({ message: 'Invalid token' });
@@ -47,7 +47,7 @@ app.post('/api/auth', (req, res) => {
     const body = req.body;
     const user = USERS.find(user => user.username === body.username);
     if (!user || !bcrypt.compareSync(body.password, user.password)) return res.sendStatus(401);
-    const token = jwt.sign({ userID: user.userid }, 'soup-app-secret', { expiresIn: '2h' });
+    const token = jwt.sign({ userID: user.userid }, 'jwt-app-secret', { expiresIn: '2h' });
     res.send({ token });
 });
 app.get('/api/list', (req, res) => {
