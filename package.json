@@ -1,6 +1,9 @@
 {
   "name": "jwt-server",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.x"
+  },
   "description": "JSON Web Token server.",
   "main": "server.js",
   "scripts": {
