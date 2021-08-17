@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const cors = require('cors');
 const corsOptions = { origin: '*' };
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 // Demo data
 const LIST = [
     { 'listid': 1, 'userid': 1, 'name': 'Car', 'completed': false },
