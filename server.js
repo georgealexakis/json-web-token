@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const cors = require('cors');
 const corsOptions = { origin: '*' };
+const bcrypt = require('bcrypt');
 // Demo data
 const LIST = [
     { 'listid': 1, 'userid': 1, 'name': 'Car', 'completed': false },
@@ -13,9 +14,9 @@ const LIST = [
     { 'listid': 4, 'userid': 3, 'name': 'Angular', 'completed': false }
 ];
 const USERS = [
-    { 'userid': 1, 'username': 'george', 'password': '1111' },
-    { 'userid': 2, 'username': 'peter', 'password': '1234' },
-    { 'userid': 3, 'username': 'john', 'password': '4321' },
+    { 'userid': 1, 'username': 'george', 'password': '$2b$10$o/AXEfXBO9uh6YxqBXAtwOHv0KigUuoO66T3elIv2bo951xkO55MG' }, // password: 1111
+    { 'userid': 2, 'username': 'peter', 'password': '$2b$10$ucaft0YayhwspG1.o6slXOdRMatQiLUHNGVAcUom7oDrNh6dtJa2K' }, // password: 1234
+    { 'userid': 3, 'username': 'john', 'password': '$2b$10$OrSFsJFF/XggEeCwOCfX7u6Nk5jsZBjqxU59hCapk55O6T1r3WsXS' }, // password: 4321
 ];
 function getList(userID) {
     const list = _.filter(LIST, ['userid', userID]);
@@ -45,7 +46,7 @@ app.get('/', (_req, res) => {
 app.post('/api/auth', (req, res) => {
     const body = req.body;
     const user = USERS.find(user => user.username === body.username);
-    if (!user || body.password !== user.password) return res.sendStatus(401);
+    if (!user || !bcrypt.compareSync(body.password, user.password)) return res.sendStatus(401);
     const token = jwt.sign({ userID: user.userid }, 'soup-app-secret', { expiresIn: '2h' });
     res.send({ token });
 });
